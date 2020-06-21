@@ -5,6 +5,6 @@ class Session {
     
     private init() {}
     
-    var userId: String = ""
-    var token: Int = 0
+    var userId: Int = 0
+    var token: String = ""
 }
