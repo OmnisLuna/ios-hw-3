@@ -17,11 +17,6 @@ class SwipePhotoController: UIViewController {
         let swipeGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(onSwipe))
         self.view.addGestureRecognizer(swipeGestureRecognizer)
         
-        PhotosLoader().getAllPhotosByOwnerId(ownerId: currentUserId) { [weak self] photos in
-            self?.photos = photos
-            self?.view.layoutIfNeeded()
-        }
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {

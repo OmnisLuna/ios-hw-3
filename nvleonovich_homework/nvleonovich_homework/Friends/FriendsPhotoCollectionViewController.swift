@@ -16,9 +16,6 @@ class FriendsPhotoCollectionViewController: UICollectionViewController {
     let animation = Animations()
     var photos: [Photo] = []
 
-//    override func viewWillAppear(_ animated: Bool) {
-//        <#code#>
-//    }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.collectionView.delegate = self
@@ -76,6 +73,7 @@ class FriendsPhotoCollectionViewController: UICollectionViewController {
             let index = collectionView.indexPathsForSelectedItems!.first!
             let photoIndex = index.item
             target.photoIndex = photoIndex
+            target.photos = photos
         }
     }
     

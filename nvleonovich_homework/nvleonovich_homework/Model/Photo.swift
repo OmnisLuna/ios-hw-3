@@ -15,7 +15,7 @@ class Photo {
     init(json: JSON) {
         self.id = json["id"].intValue
         self.ownerId = json["owner_id"].intValue
-        self.url = json["sizes"][0]["url"].stringValue
+        self.url = json["sizes"][3]["url"].stringValue
         self.isLikedByMe = json["likes"]["user_likes"].boolValue
         self.likesCount = json["likes"]["count"].intValue
     }
