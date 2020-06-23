@@ -97,7 +97,6 @@
                                         </state>
                                         <connections>
                                             <action selector="loginPressedWith_sender:forEvent:" destination="BYZ-38-t0r" eventType="touchUpInside" id="udg-PY-jpl"/>
-                                            <segue destination="qtA-vi-RgT" kind="presentation" id="VIA-zj-J8A"/>
                                         </connections>
                                     </button>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="wt3-2t-rQp">
@@ -174,7 +173,7 @@
         <!--Profile Tab Bar Controller-->
         <scene sceneID="NWY-1g-0PP">
             <objects>
-                <tabBarController modalPresentationStyle="fullScreen" id="qtA-vi-RgT" customClass="ProfileTabBarController" customModule="nvleonovich_homework" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="profileTabBar" modalPresentationStyle="fullScreen" id="qtA-vi-RgT" customClass="ProfileTabBarController" customModule="nvleonovich_homework" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="ykP-VP-hlM">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -742,7 +741,7 @@
         <!--Friends List Navigation-->
         <scene sceneID="HCa-hB-bsV">
             <objects>
-                <navigationController title="Friends List Navigation" id="eV5-65-wRs" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="friendsController" title="Friends List Navigation" id="eV5-65-wRs" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Друзья" image="person" catalog="system" selectedImage="person.fill" id="ZSY-bX-gxk"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Un8-Wm-PWY">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
