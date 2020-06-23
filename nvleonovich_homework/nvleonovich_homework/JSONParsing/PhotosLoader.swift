@@ -9,7 +9,7 @@ class PhotosLoader {
             "access_token": "\(Session.instance.token)",
             "v": "5.110",
             "count": "10",
-            "owner_id": "-\(ownerId)", //без owner_id приходят фото авторизованного пользователя
+            "owner_id": "\(ownerId)", //без owner_id приходят фото авторизованного пользователя
             "extended": "1",
         ]
 

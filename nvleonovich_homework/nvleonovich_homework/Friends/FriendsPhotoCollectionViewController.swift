@@ -16,15 +16,18 @@ class FriendsPhotoCollectionViewController: UICollectionViewController {
     let animation = Animations()
     var photos: [Photo] = []
 
-    override func viewWillAppear(_ animated: Bool) {
-               PhotosLoader().getAllPhotosByOwnerId(ownerId: currentUserId) { [weak self] photos in
-                 self?.photos = photos
-             }
-             
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        <#code#>
+//    }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.collectionView.delegate = self
+        PhotosLoader().getAllPhotosByOwnerId(ownerId: currentUserId) { [weak self] photos in
+            self?.photos = photos
+             DispatchQueue.main.async {
+             self?.collectionView.reloadData()
+            }
+        }
         print("\(currentUserId) и \(photos)")
     }
         
