@@ -1,8 +1,8 @@
 {
   "images" : [
     {
+      "filename" : "placeholder-1-300x200.png",
       "idiom" : "universal",
-      "filename" : "leiatop1-650x574.jpg",
       "scale" : "1x"
     },
     {
@@ -15,7 +15,7 @@
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   }
 }

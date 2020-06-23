@@ -36,7 +36,7 @@ class FriendsListViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Friend", for: indexPath) as! FriendTableViewCell
         let fullname = "\(users[indexPath.row].name) " + "\(users[indexPath.row].surname)"
         cell.myFriendName.text = "\(fullname)"
-       cell.myFriendAvatar.sd_setImage(with: URL(string: users[indexPath.row].avatar), placeholderImage: UIImage(named: ".png"))
+       cell.myFriendAvatar.sd_setImage(with: URL(string: users[indexPath.row].avatar), placeholderImage: UIImage(named: "Portrait_Placeholder.png"))
         return cell
     }
     
