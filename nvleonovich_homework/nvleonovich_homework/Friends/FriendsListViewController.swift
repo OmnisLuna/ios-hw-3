@@ -9,19 +9,14 @@ class FriendsListViewController: UITableViewController {
     //var sections = Array<Section>()
     var users = Array<User>()
     
-    override func viewWillAppear(_ animated: Bool) {
-        FriendsLoader().getMyFriends() { [weak self] friends in
-                self?.users = friends
-                self?.tableView.reloadData()
-            }
-        print(users)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableFriendsView.dataSource = self
         searchBar.delegate = self
-        print(users)
+        FriendsLoader().getMyFriends() { [weak self] friends in
+                self?.users = friends
+                self?.tableView.reloadData()
+            }
     }
     
     //friends table sections
@@ -51,8 +46,7 @@ class FriendsListViewController: UITableViewController {
                 let selectedIndexPath = tableView.indexPathForSelectedRow else {
                 return
             }
-            let currentUser = users[selectedIndexPath.row]
-            target.currentUserId = currentUser.id
+            target.currentUserId = users[selectedIndexPath.row].id
         }
     }
    

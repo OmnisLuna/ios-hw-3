@@ -29,13 +29,3 @@ class GroupsSearchTableViewController: UITableViewController {
         return cell
     }
 }
-
-//    var groupName = [
-//        "Новости",
-//        "Путешествия",
-//        "Игры",
-//        "Работа",
-//        "Тренировки",
-//        "Куда сходить",
-//        "Рецепты",
-//   ]/Users/nvleonovich/Public/ios-hw-3/ios-hw-3/nvleonovich_homework/nvleonovich_homework/Groups/GroupsSearchTableViewController.swift
