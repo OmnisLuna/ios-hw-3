@@ -44,70 +44,8 @@ class AuthorizationViewController: UIViewController {
             let request = URLRequest(url: urlComponents.url!)
             
             webview.load(request)
-
     }
     
-    func getMyFriends() {
-        
-        print("Список друзей авторизованного пользователя")
-        
-        let parameters: Parameters = [
-            "access_token": "\(Session.instance.token)",
-            "v": "5.110",
-            "user_id": "\(Session.instance.userId)",
-        ]
-        
-        AF.request("https://api.vk.com/method/friends.get", method: .get, parameters: parameters, headers: nil).responseJSON { (response) in
-            print("Список друзей авторизованного пользователя \(response.value!)")
-        }
-    }
-    
-    func getMyGroups() {
-        
-        print()
-    
-        print("TOKEN = \(Session.instance.token)")
-        
-        let parameters: Parameters = [
-            "access_token": "\(Session.instance.token)",
-            "v": "5.110",
-            "user_id": "\(Session.instance.userId)",
-        ]
-        
-        AF.request("https://api.vk.com/method/groups.get", method: .get, parameters: parameters, headers: nil).responseJSON { (response) in
-            print("Группы авторизованного пользователя \(response.value!)")
-        }
-    }
-    
-    func getGroupByQuery() {
-        
-        print()
-
-        let parameters: Parameters = [
-            "access_token": "\(Session.instance.token)",
-            "v": "5.110",
-            "q": "Парикхмахер"
-        ]
-        
-        AF.request("https://api.vk.com/method/groups.search", method: .get, parameters: parameters, headers: nil).responseJSON { (response) in
-            print("Группы, найденные по запросу \(response.value!)")
-        }
-    }
-    
-    func getAllPhotosByOwnerId() {
-        
-        print()
-        
-        let parameters: Parameters = [
-            "access_token": "\(Session.instance.token)",
-            "v": "5.110",
-//            "owner_id": "-\(Session.instance.userId)", //без owner_id приходят фото авторизованного пользователя
-        ]
-
-               AF.request("https://api.vk.com/method/photos.getAll", method: .get, parameters: parameters, headers: nil).responseJSON { (response) in
-                print("Все фотографии пользователя по его id \(response.value!)")
-               }
-    }
 }
 
 extension AuthorizationViewController: WKNavigationDelegate {
@@ -136,11 +74,21 @@ extension AuthorizationViewController: WKNavigationDelegate {
         Session.instance.userId = userId
         Session.instance.token = token!
         
+        print("token \(Session.instance.token)")
+        
         decisionHandler(.cancel)
         
-        getMyFriends() //6. Получение списка друзей;
-        getAllPhotosByOwnerId() //7. Получение фотографий человека;
-        getMyGroups()    //8. Получение групп текущего пользователя;
-        getGroupByQuery() //9. Получение групп по поисковому запросу;
-    }
+        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+
+        let vc : ProfileTabBarController = storyboard.instantiateViewController(withIdentifier: "profileTabBar") as! ProfileTabBarController
+
+        let navigationController = UINavigationController(rootViewController: vc)
+
+        navigationController.modalPresentationStyle = .fullScreen
+
+        present(navigationController, animated: true, completion: nil)
+        
+        }
+    
 }
+

@@ -1,27 +1,22 @@
-//
-//  SwipePhotoController.swift
-//  nvleonovich_homework
-//
-//  Created by nvleonovich on 19.04.2020.
-//  Copyright © 2020 nvleonovich. All rights reserved.
-//
-
 import UIKit
+import SDWebImage
 
 class SwipePhotoController: UIViewController {
     
     @IBOutlet weak var currentView: FullSIzePhotoView!
     @IBOutlet weak var bufferView: FullSIzePhotoView!
     let animation = Animations()
-    var currentUser: User = users[0]
+    var currentUserId: Int = 0
     var photoIndex = 0
     var animator: UIViewPropertyAnimator!
+    var photos: [Photo] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViews()
         let swipeGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(onSwipe))
         self.view.addGestureRecognizer(swipeGestureRecognizer)
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -29,24 +24,24 @@ class SwipePhotoController: UIViewController {
         view.subviews.forEach({ $0.removeFromSuperview() })
     }
     
-    private func configureViews() {
-        currentView.heartButton.isSelected = currentUser.photos[photoIndex].isLikedByMe
-        currentView.likesCount.text = "\(currentUser.photos[photoIndex].likesCount)"
-        currentView.likesCount.textColor = currentView.heartButton.isSelected ? #colorLiteral(red: 0.8094672561, green: 0, blue: 0.2113229036, alpha: 1)  : #colorLiteral(red: 0, green: 0.4539153576, blue: 1, alpha: 1)
-        currentView.image.image = currentUser.photos[photoIndex].pic
-        bufferView.alpha = 0
-    }
+        private func configureViews() {
+            currentView.heartButton.isSelected = photos[photoIndex].isLikedByMe
+            currentView.likesCount.text = "\(photos[photoIndex].likesCount)"
+            currentView.likesCount.textColor = currentView.heartButton.isSelected ? #colorLiteral(red: 0.8094672561, green: 0, blue: 0.2113229036, alpha: 1)  : #colorLiteral(red: 0, green: 0.4539153576, blue: 1, alpha: 1)
+            currentView.image.sd_setImage(with: URL(string: photos[photoIndex].url), placeholderImage: UIImage(named: ".png"))
+            bufferView.alpha = 0
+        }
     
     private func getSwipeRightIndex() ->Int {
         var index = photoIndex + 1
-        if index > currentUser.photos.count - 1 { index = 0 }
+        if index > photos.count - 1 { index = 0 }
         return index
 
     }
 
     private func getSwipeLeftIndex() -> Int {
         var index = photoIndex - 1
-        if index < 0 { index = currentUser.photos.count - 1 }
+        if index < 0 { index = photos.count - 1 }
         return index
     }
     
@@ -70,7 +65,7 @@ class SwipePhotoController: UIViewController {
                 index = getSwipeRightIndex()
                 offset = -(view.frame.width + 20)
             }
-            bufferView.image.image = currentUser.photos[index].pic
+            bufferView.image.sd_setImage(with: URL(string: photos[index].url), placeholderImage: UIImage(named: ".png"))
             self.bufferView.transform = CGAffineTransform(translationX: translation.x + offset ,y: 0)
             
         case .ended:
@@ -128,15 +123,15 @@ class SwipePhotoController: UIViewController {
     }
 
     @IBAction func clickLike(_ sender: UIButton) {
-        currentUser.photos[photoIndex].isLikedByMe = !currentUser.photos[photoIndex].isLikedByMe
-        currentView.heartButton.isSelected = currentUser.photos[photoIndex].isLikedByMe
-        if currentUser.photos[photoIndex].isLikedByMe {
-               currentUser.photos[photoIndex].likesCount += 1
+        photos[photoIndex].isLikedByMe = !photos[photoIndex].isLikedByMe
+        currentView.heartButton.isSelected = photos[photoIndex].isLikedByMe
+        if photos[photoIndex].isLikedByMe {
+               photos[photoIndex].likesCount += 1
            } else {
-               currentUser.photos[photoIndex].likesCount -= 1
+               photos[photoIndex].likesCount -= 1
            }
         animation.increaseElementOnTap(currentView.heartButton)
-        currentView.likesCount.text = "\(currentUser.photos[photoIndex].likesCount)"
+        currentView.likesCount.text = "\(photos[photoIndex].likesCount)"
         currentView.likesCount.textColor = currentView.heartButton.isSelected ? #colorLiteral(red: 0.8094672561, green: 0, blue: 0.2113229036, alpha: 1)  : #colorLiteral(red: 0, green: 0.4539153576, blue: 1, alpha: 1)
     }
 }
