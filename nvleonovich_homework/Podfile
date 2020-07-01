@@ -7,6 +7,7 @@ target 'nvleonovich_homework' do
 pod 'SwiftyJSON'
 pod 'Alamofire'
 pod 'SDWebImage'
+pod 'RealmSwift'
   # Pods for nvleonovich_homework
 
 end

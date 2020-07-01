@@ -8,10 +8,10 @@ class GroupsListTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        GroupsWorker().getMyGroups() { [weak self] groups in
-                self?.myGroups = groups
-                self?.tableView.reloadData()
-            }
+//        GroupsWorker().getMyGroups() { [weak self] groups in
+//                self?.myGroups = groups
+//                self?.tableView.reloadData()
+//            }
 //        print(myGroups)
         }
     
@@ -40,7 +40,7 @@ class GroupsListTableViewController: UITableViewController {
                 let group = allGroupsController.allGroups[indexPath.row].id
 //                if !groupName.contains(group) {
 //                    groupName.append(group)
-                GroupsWorker().joinGroup(id: group)
+//                GroupsWorker().joinGroup(id: group)
                 tableView.reloadData()
                 }
         }
@@ -49,7 +49,7 @@ class GroupsListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             myGroups.remove(at: indexPath.row)
-            GroupsWorker().leaveGroup(id: myGroups[indexPath.row].id)
+//            GroupsWorker().leaveGroup(id: myGroups[indexPath.row].id)
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.reloadData()
         }
