@@ -1,8 +1,9 @@
 import UIKit
 import SwiftyJSON
 import Alamofire
+import RealmSwift
 
-class Group {
+struct Group {
     //данные элемента группа
     let id: Int
     var name: String
@@ -15,4 +16,28 @@ class Group {
         self.isMember = json["is_member"].intValue
         self.avatar = json["photo_100"].stringValue
     }
+}
+
+class GroupRealm: Object, Decodable {
+    @objc dynamic var id: Int
+    @objc dynamic var name: String
+    @objc dynamic var isMember: Bool
+    @objc dynamic var avatar: String
+}
+
+extension GroupRealm {
+    enum CodingKeys: String, CodingKey {
+        case id = "id"
+        case name = "name"
+        case avatar = "photo_100"
+        case isMember = "is_member"
+    }
+}
+
+struct GroupRealmResponse: Decodable {
+    let response: GroupRealmItems
+}
+
+struct GroupRealmItems: Decodable {
+    let items: [GroupRealm]
 }

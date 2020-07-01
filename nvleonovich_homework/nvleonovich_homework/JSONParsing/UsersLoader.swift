@@ -16,7 +16,7 @@ class UsersLoader {
         
         AF.request("https://api.vk.com/method/users.get", method: .get, parameters: parameters, headers: nil).responseJSON { (response) in
             let json = JSON(response.value!)
-            users = json["response"].map { User(json: $0.1) }
+//            users = json["response"].map { User(json: $0.1) }
         }
         print("Пользователи: \(users)") //сделано для проверки во время разработки, что сами данные существуют
         return users

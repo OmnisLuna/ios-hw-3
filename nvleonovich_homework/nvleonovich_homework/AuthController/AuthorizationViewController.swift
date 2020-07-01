@@ -77,6 +77,8 @@ extension AuthorizationViewController: WKNavigationDelegate {
         print("token \(Session.instance.token)")
         
         decisionHandler(.cancel)
+//        performSegue(withIdentifier: "GoToFriendsList", sender: nil)
+        
         
         let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
 

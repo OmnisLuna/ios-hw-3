@@ -35,7 +35,6 @@
 		048F08DA244510B600375D45 /* NewsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048F08D9244510B600375D45 /* NewsData.swift */; };
 		049031052495829F004F3F43 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049031042495829F004F3F43 /* Session.swift */; };
 		04A914252430E434005ABD6A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A914242430E434005ABD6A /* AppDelegate.swift */; };
-		04A914292430E434005ABD6A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A914282430E434005ABD6A /* LoginViewController.swift */; };
 		04A9142C2430E434005ABD6A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04A9142A2430E434005ABD6A /* Main.storyboard */; };
 		04A9142E2430E435005ABD6A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04A9142D2430E435005ABD6A /* Assets.xcassets */; };
 		04A914312430E435005ABD6A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04A9142F2430E435005ABD6A /* LaunchScreen.storyboard */; };
@@ -43,6 +42,8 @@
 		04B9334D249ECBF600E97280 /* AuthorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B9334C249ECBF600E97280 /* AuthorizationViewController.swift */; };
 		04CDE87D244C8B8A00A43C3A /* SwipePhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CDE87C244C8B8A00A43C3A /* SwipePhotoController.swift */; };
 		04EC1145244526A5000B2E6D /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EC1144244526A5000B2E6D /* AvatarView.swift */; };
+		04F07F3824ABCB5A0073ABBB /* RealmHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F07F3724ABCB5A0073ABBB /* RealmHelper.swift */; };
+		04F07F3A24ABCEA40073ABBB /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F07F3924ABCEA40073ABBB /* Requests.swift */; };
 		2D4E8611B6D2E7835EE14408 /* Pods_nvleonovich_homework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66E374F94D279DCD3CB6927C /* Pods_nvleonovich_homework.framework */; };
 /* End PBXBuildFile section */
 
@@ -76,7 +77,6 @@
 		049031042495829F004F3F43 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		04A914212430E434005ABD6A /* nvleonovich_homework.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nvleonovich_homework.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04A914242430E434005ABD6A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		04A914282430E434005ABD6A /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		04A9142B2430E434005ABD6A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		04A9142D2430E435005ABD6A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		04A914302430E435005ABD6A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -85,6 +85,8 @@
 		04B9334C249ECBF600E97280 /* AuthorizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationViewController.swift; sourceTree = "<group>"; };
 		04CDE87C244C8B8A00A43C3A /* SwipePhotoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipePhotoController.swift; sourceTree = "<group>"; };
 		04EC1144244526A5000B2E6D /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
+		04F07F3724ABCB5A0073ABBB /* RealmHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmHelper.swift; sourceTree = "<group>"; };
+		04F07F3924ABCEA40073ABBB /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
 		66E374F94D279DCD3CB6927C /* Pods_nvleonovich_homework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_nvleonovich_homework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D36AFDB6CEB4D827F7779BEC /* Pods-nvleonovich_homework.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nvleonovich_homework.release.xcconfig"; path = "Target Support Files/Pods-nvleonovich_homework/Pods-nvleonovich_homework.release.xcconfig"; sourceTree = "<group>"; };
 		FEE00ED8E788FBEE1670BF5F /* Pods-nvleonovich_homework.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nvleonovich_homework.debug.xcconfig"; path = "Target Support Files/Pods-nvleonovich_homework/Pods-nvleonovich_homework.debug.xcconfig"; sourceTree = "<group>"; };
@@ -151,6 +153,8 @@
 				0423655724A0EDB600CA72A2 /* PhotosLoader.swift */,
 				0423655924A0F01A00CA72A2 /* UsersLoader.swift */,
 				0423655F24A15AA500CA72A2 /* LikesWorker.swift */,
+				04F07F3724ABCB5A0073ABBB /* RealmHelper.swift */,
+				04F07F3924ABCEA40073ABBB /* Requests.swift */,
 			);
 			path = JSONParsing;
 			sourceTree = "<group>";
@@ -193,7 +197,6 @@
 				048F08D02444E4A400375D45 /* News */,
 				04000C392433D11200E93B56 /* Friends */,
 				04A914242430E434005ABD6A /* AppDelegate.swift */,
-				04A914282430E434005ABD6A /* LoginViewController.swift */,
 				04A9142D2430E435005ABD6A /* Assets.xcassets */,
 				04A9142F2430E435005ABD6A /* LaunchScreen.storyboard */,
 				04A914322430E435005ABD6A /* Info.plist */,
@@ -347,12 +350,13 @@
 			files = (
 				048F08D42445010500375D45 /* NewsCard.swift in Sources */,
 				0423655824A0EDB600CA72A2 /* PhotosLoader.swift in Sources */,
-				04A914292430E434005ABD6A /* LoginViewController.swift in Sources */,
 				0461FC5E24317F240049E9A8 /* FriendsPhotoCollectionViewController.swift in Sources */,
 				0423654D24A0ECBF00CA72A2 /* Photo.swift in Sources */,
 				0423655424A0ED7B00CA72A2 /* FriendsLoader.swift in Sources */,
 				0461FC5C24317E9E0049E9A8 /* FriendsListViewController.swift in Sources */,
+				04F07F3824ABCB5A0073ABBB /* RealmHelper.swift in Sources */,
 				047934BA243516D1009F130B /* MyGroupTableViewCell.swift in Sources */,
+				04F07F3A24ABCEA40073ABBB /* Requests.swift in Sources */,
 				04CDE87D244C8B8A00A43C3A /* SwipePhotoController.swift in Sources */,
 				0423654F24A0ECCB00CA72A2 /* Group.swift in Sources */,
 				04B58553244483BA00B00AB1 /* AvatarShadow.swift in Sources */,

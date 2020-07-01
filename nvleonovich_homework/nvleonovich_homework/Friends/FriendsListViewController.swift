@@ -1,22 +1,52 @@
 import UIKit
 import SDWebImage
+import RealmSwift
 
 class FriendsListViewController: UITableViewController {
     
     @IBOutlet var tableFriendsView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
 
-    //var sections = Array<Section>()
-    var users = Array<User>()
+    private var users = [UserRealm]()
+    var userId: Int = 601976
+    private var sectionTitles = [String]()
+//    private var token: NotificationToken?
+    var photos = [PhotoRealm]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableFriendsView.dataSource = self
         searchBar.delegate = self
-        FriendsLoader().getMyFriends() { [weak self] friends in
-                self?.users = friends
-                self?.tableView.reloadData()
+        RealmHelper.instance.cleanRealm()
+        requestData()
+        requestPhotosForTest()
+//        tableView.tableFooterView = UIView()
+    }
+    
+    private func requestData() {
+        Requests.instance.getMyFriends { result in
+            switch result {
+            case .success(let users):
+                self.users = users
+            case .failure(let error):
+                print(error)
             }
+        }
+        self.tableView.reloadData()
+    }
+    
+    private func requestPhotosForTest() {
+        Requests.instance.getAllPhotosByOwnerId(ownerId: userId) { result in
+            switch result {
+            case .success(let photos):
+                self.photos = photos
+            case .failure(let error):
+                print(error)
+            }
+        }
+         DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     //friends table sections

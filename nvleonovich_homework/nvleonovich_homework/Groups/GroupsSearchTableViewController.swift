@@ -8,10 +8,10 @@ class GroupsSearchTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        GroupsWorker().getGroupsCatalog() { [weak self] groups in
-                self?.allGroups = groups
-                self?.tableView.reloadData()
-            }
+//        GroupsWorker().getGroupsCatalog() { [weak self] groups in
+//                self?.allGroups = groups
+//                self?.tableView.reloadData()
+//            }
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
