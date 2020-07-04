@@ -3,17 +3,24 @@ import SDWebImage
 
 class GroupsListTableViewController: UITableViewController {
     
-    var myGroups: [Group] = []
+    var myGroups = [GroupRealm]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        GroupsWorker().getMyGroups() { [weak self] groups in
-//                self?.myGroups = groups
-//                self?.tableView.reloadData()
-//            }
-//        print(myGroups)
+        requestData()
         }
+    
+    private func requestData() {
+        Requests.instance.getMyGroups { [weak self] result in
+            switch result {
+            case .success(let groups):
+                self?.myGroups = groups
+            case .failure(let error):
+                print(error)
+            }
+            self?.tableView.reloadData()
+        }
+    }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -37,7 +44,7 @@ class GroupsListTableViewController: UITableViewController {
             let allGroupsController = segue.source as! GroupsSearchTableViewController
         
             if let indexPath = allGroupsController.tableView.indexPathForSelectedRow {
-                let group = allGroupsController.allGroups[indexPath.row].id
+//                let group = allGroupsController.allGroups[indexPath.row].id
 //                if !groupName.contains(group) {
 //                    groupName.append(group)
 //                GroupsWorker().joinGroup(id: group)

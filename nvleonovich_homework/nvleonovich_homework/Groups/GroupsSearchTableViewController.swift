@@ -1,17 +1,24 @@
 import UIKit
 import SDWebImage
+import RealmSwift
 
 class GroupsSearchTableViewController: UITableViewController {
     
-    var allGroups: Array<Group> = []
+    var allGroups = [GroupRealm]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        GroupsWorker().getGroupsCatalog() { [weak self] groups in
-//                self?.allGroups = groups
-//                self?.tableView.reloadData()
-//            }
+        requestData()
+        print("группы \(allGroups)")
+    }
+    
+    private func requestData() {
+        Requests.instance.getGroupsCatalog { [weak self] result in
+            let realm = try! Realm()
+            //фильтруем группы, чтобы отображались только те, в которых текущий пользователь не участник
+            self?.allGroups = Array(realm.objects(GroupRealm.self).filter("isMember == 0"))
+            self?.tableView.reloadData()
+        }
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {

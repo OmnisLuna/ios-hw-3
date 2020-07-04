@@ -2,15 +2,21 @@ import SwiftyJSON
 import Alamofire
 import RealmSwift
 
+enum JsonError: Error {
+    case responseError
+}
+
 class Requests {
     static let instance = Requests()
     
     private let baseUrl = "https://api.vk.com/method/"
     private var customUrl = ""
-    private let apiVersion = "5.103"
+    private let apiVersion = "5.120"
     private let accessToken = Session.instance.token
     
     private init() {}
+    
+    // MARK: - пользователи
     
     func getMyFriends(handler: @escaping (Result<[UserRealm], Error>) -> Void) {
             customUrl = "friends.get"
@@ -20,6 +26,7 @@ class Requests {
                 "v": apiVersion,
                 "user_id": "\(Session.instance.userId)",
                 "fields": "photo_100, nickname",
+                "count": "50",
             ]
         
         AF.request(fullUrl,
@@ -27,17 +34,52 @@ class Requests {
                    parameters: parameters)
             .validate()
             .responseData(completionHandler: { responseData in
-                guard let data = responseData.data else { return }
+                guard let data = responseData.data else {
+                    handler(.failure(JsonError.responseError))
+                    return
+                }
                 let decoder = JSONDecoder()
                 do {
                     let requestResponse = try decoder.decode(UserRealmResponse.self, from: data)
                     RealmHelper.instance.saveObjects(requestResponse.response.items)
-                    
+                    handler(.success(requestResponse.response.items))
                 } catch {
                     handler(.failure(error))
                 }
             })
         }
+    
+    func getUsersInfo(ids: Int, handler: @escaping (Result<[UserRealm], Error>) -> Void) {
+        customUrl = "users.get"
+        let fullUrl = baseUrl + customUrl
+        let parameters: Parameters = [
+            "access_token": accessToken,
+            "v": apiVersion,
+            "user_ids": "\(ids)",
+            "fields": "photo_400, nickname",
+        ]
+        
+        AF.request(fullUrl,
+               method: .get,
+               parameters: parameters)
+        .validate()
+        .responseData(completionHandler: { responseData in
+            guard let data = responseData.data else {
+                handler(.failure(JsonError.responseError))
+                return
+            }
+            let decoder = JSONDecoder()
+            do {
+                let requestResponse = try decoder.decode(UserRealmResponse.self, from: data)
+                RealmHelper.instance.saveObjects(requestResponse.response.items)
+                handler(.success(requestResponse.response.items))
+            } catch {
+                handler(.failure(error))
+            }
+        })
+    }
+    
+    // MARK: - фотографии
     
     func getAllPhotosByOwnerId (ownerId: Int, handler: @escaping (Result<[PhotoRealm], Error>) -> Void) {
         customUrl = "photos.getAll"
@@ -46,34 +88,39 @@ class Requests {
         let parameters: Parameters = [
             "access_token": accessToken,
             "v": apiVersion,
-            "count": "10",
+            "count": "15",
             "owner_id": "\(ownerId)", //без owner_id приходят фото авторизованного пользователя
             "extended": "1",
         ]
-
-//       AF.request(fullUrl, method: .get, parameters: parameters, headers: nil).responseJSON { (response) in
-//        let json = JSON(response.value!)
-//        let photos = json["response"]["items"].map { Photo(json: $0.1) }
-//        completion(photos)
-//       }
+        
         AF.request(fullUrl,
                    method: .get,
                    parameters: parameters)
-            .validate()
-            .responseData(completionHandler: { responseData in
-                guard let data = responseData.data else { return }
-                let decoder = JSONDecoder()
-                do {
-                    let requestResponse = try decoder.decode(PhotoRealmResponse.self, from: data)
-                    RealmHelper.instance.saveObjects(requestResponse.response.items)
-                    
-                } catch {
-                    handler(.failure(error))
+                   .validate()
+                   .responseData(completionHandler: { response in
+            guard let json = try? JSON(response.data) else {
+                    handler(.failure(JsonError.responseError))
+                    return
                 }
-            })
+            let items = json["response"]["items"].arrayValue
+            var photos = [PhotoRealm]()
+            for item in items {
+                let photo = PhotoRealm()
+                photo.id = item["id"].intValue
+                photo.ownerId = item["owner_id"].intValue
+                photo.url = item["sizes"][3]["url"].stringValue
+                photo.isLikedByMe = item["likes"]["user_likes"].boolValue
+                photo.likesCount = item["likes"]["count"].intValue
+                photos.append(photo)
+        }
+                    RealmHelper.instance.saveObjects(photos)
+                    handler(.success(photos))
+    })
     }
+    
+        // MARK: - группы
 
-    func getMyGroups(handler: @escaping (Result<[PhotoRealm], Error>) -> Void) {
+    func getMyGroups(handler: @escaping (Result<[GroupRealm], Error>) -> Void) {
         customUrl = "groups.get"
         let fullUrl = baseUrl + customUrl
         
@@ -81,33 +128,31 @@ class Requests {
             "access_token": accessToken,
             "v": apiVersion,
             "owner_id": "\(Session.instance.userId)",
-            "extended": "1"
+            "extended": "1",
+            "count": "20",
         ]
         
-//        AF.request(fullUrl, method: .get, parameters: parameters, headers: nil).responseJSON { (response) in
-//            let json = JSON(response.value!)
-//            let groups = json["response"]["items"].map { Group(json: $0.1) }
-//            completion(groups)
-//        }
-        
         AF.request(fullUrl,
-                    method: .get,
-                    parameters: parameters)
-             .validate()
-             .responseData(completionHandler: { responseData in
-                 guard let data = responseData.data else { return }
-                 let decoder = JSONDecoder()
-                 do {
-                     let requestResponse = try decoder.decode(GroupRealmResponse.self, from: data)
-                     RealmHelper.instance.saveObjects(requestResponse.response.items)
-                     
-                 } catch {
-                     handler(.failure(error))
-                 }
-             })
-    }
+                   method: .get,
+                   parameters: parameters)
+            .validate()
+            .responseData(completionHandler: { responseData in
+                guard let data = responseData.data else {
+                    handler(.failure(JsonError.responseError))
+                    return
+                }
+                let decoder = JSONDecoder()
+                do {
+                    let requestResponse = try decoder.decode(GroupRealmResponse.self, from: data)
+                    RealmHelper.instance.saveObjects(requestResponse.response.items)
+                    handler(.success(requestResponse.response.items))
+                } catch {
+                    handler(.failure(error))
+                }
+            })
+        }
 
-    func getGroupByQuery() {
+    func getGroupByQuery(handler: @escaping (Result<[GroupRealm], Error>) -> Void) {
         customUrl = "groups.search"
         let fullUrl = baseUrl + customUrl
 
@@ -117,12 +162,27 @@ class Requests {
             "q": ""
         ]
         
-        AF.request(fullUrl, method: .get, parameters: parameters, headers: nil).responseJSON { (response) in
-            print("Группы, найденные по запросу \(response.value!)")
-        }
+        AF.request(fullUrl,
+                   method: .get,
+                   parameters: parameters)
+            .validate()
+            .responseData(completionHandler: { responseData in
+                guard let data = responseData.data else {
+                    handler(.failure(JsonError.responseError))
+                    return
+                }
+                let decoder = JSONDecoder()
+                do {
+                    let requestResponse = try decoder.decode(GroupRealmResponse.self, from: data)
+                    RealmHelper.instance.saveObjects(requestResponse.response.items)
+                    handler(.success(requestResponse.response.items))
+                } catch {
+                    handler(.failure(error))
+                }
+            })
     }
     
-    func getGroupsCatalog(completion: @escaping (_ groups: [Group]) -> ()) {
+    func getGroupsCatalog(handler: @escaping (Result<[GroupRealm], Error>) -> Void) {
         customUrl = "groups.getCatalog"
         let fullUrl = baseUrl + customUrl
         
@@ -132,12 +192,25 @@ class Requests {
             "extended": "1"
         ]
         
-        AF.request(fullUrl, method: .get, parameters: parameters, headers: nil).responseJSON { (response) in
-            let json = JSON(response.value!)
-            let groups = json["response"]["items"].map { Group(json: $0.1) }
-            completion(groups)
-        }
-        }
+        AF.request(fullUrl,
+                   method: .get,
+                   parameters: parameters)
+            .validate()
+            .responseData(completionHandler: { responseData in
+                guard let data = responseData.data else {
+                    handler(.failure(JsonError.responseError))
+                    return
+                }
+                let decoder = JSONDecoder()
+                do {
+                    let requestResponse = try decoder.decode(GroupRealmResponse.self, from: data)
+                    RealmHelper.instance.saveObjects(requestResponse.response.items)
+                    handler(.success(requestResponse.response.items))
+                } catch {
+                    handler(.failure(error))
+                }
+        })
+    }
     
     func joinGroup(id: Int) {
         customUrl = "groups.join"
@@ -167,26 +240,7 @@ class Requests {
         }
     }
     
-    func getUsersInfo(ids: [Int]) -> [User] {
-        customUrl = "users.get"
-        let fullUrl = baseUrl + customUrl
-        
-        var users: [User] = []
-        
-        let parameters: Parameters = [
-            "access_token": accessToken,
-            "v": apiVersion,
-            "user_ids": "\(ids)",
-            "fields": "photo_100",
-        ]
-        
-        AF.request(fullUrl, method: .get, parameters: parameters, headers: nil).responseJSON { (response) in
-            let json = JSON(response.value!)
-//            users = json["response"].map { User(json: $0.1) }
-        }
-        print("Пользователи: \(users)") //сделано для проверки во время разработки, что сами данные существуют
-        return users
-    }
+    // MARK: - лайки
     
     func addLike(_ itemId: Int, _ ownerId: Int) {
         customUrl = "likes.add"
