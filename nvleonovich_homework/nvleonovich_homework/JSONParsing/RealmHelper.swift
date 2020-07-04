@@ -10,7 +10,7 @@ class RealmHelper {
         do {
             let realm = try Realm()
             realm.beginWrite()
-            realm.add(objects)
+            realm.add(objects, update: .all)
             try realm.commitWrite()
         } catch {
             print(error)

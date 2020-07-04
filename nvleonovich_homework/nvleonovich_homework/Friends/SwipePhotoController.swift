@@ -13,7 +13,7 @@ class SwipePhotoController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        configureViews()
+        configureViews()
         let swipeGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(onSwipe))
         self.view.addGestureRecognizer(swipeGestureRecognizer)
         
@@ -24,13 +24,13 @@ class SwipePhotoController: UIViewController {
         view.subviews.forEach({ $0.removeFromSuperview() })
     }
     
-//        private func configureViews() {
-//            currentView.heartButton.isSelected = photos[photoIndex].likes.isLikedByMe
-//            currentView.likesCount.text = "\(photos[photoIndex].likes.likesCount)"
-//            currentView.likesCount.textColor = currentView.heartButton.isSelected ? #colorLiteral(red: 0.8094672561, green: 0, blue: 0.2113229036, alpha: 1)  : #colorLiteral(red: 0, green: 0.4539153576, blue: 1, alpha: 1)
-//            currentView.image.sd_setImage(with: URL(string: photos[photoIndex].sizes[4].url), placeholderImage: UIImage(named: ".png"))
-//            bufferView.alpha = 0
-//        }
+        private func configureViews() {
+            currentView.heartButton.isSelected = photos[photoIndex].isLikedByMe
+            currentView.likesCount.text = "\(photos[photoIndex].likesCount)"
+            currentView.likesCount.textColor = currentView.heartButton.isSelected ? #colorLiteral(red: 0.8094672561, green: 0, blue: 0.2113229036, alpha: 1)  : #colorLiteral(red: 0, green: 0.4539153576, blue: 1, alpha: 1)
+            currentView.image.sd_setImage(with: URL(string: photos[photoIndex].url), placeholderImage: UIImage(named: ".png"))
+            bufferView.alpha = 0
+        }
     
     private func getSwipeRightIndex() ->Int {
         var index = photoIndex + 1
@@ -65,7 +65,7 @@ class SwipePhotoController: UIViewController {
                 index = getSwipeRightIndex()
                 offset = -(view.frame.width + 20)
             }
-//            bufferView.image.sd_setImage(with: URL(string: photos[index].sizes[4].url), placeholderImage: UIImage(named: ".png"))
+            bufferView.image.sd_setImage(with: URL(string: photos[index].url), placeholderImage: UIImage(named: ".png"))
             self.bufferView.transform = CGAffineTransform(translationX: translation.x + offset ,y: 0)
             
         case .ended:

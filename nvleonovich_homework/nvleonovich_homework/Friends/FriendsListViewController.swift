@@ -8,51 +8,32 @@ class FriendsListViewController: UITableViewController {
     @IBOutlet weak var searchBar: UISearchBar!
 
     private var users = [UserRealm]()
-    var userId: Int = 601976
     private var sectionTitles = [String]()
-//    private var token: NotificationToken?
-    var photos = [PhotoRealm]()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableFriendsView.dataSource = self
         searchBar.delegate = self
-        RealmHelper.instance.cleanRealm()
         requestData()
-        requestPhotosForTest()
-//        tableView.tableFooterView = UIView()
     }
     
     private func requestData() {
-        Requests.instance.getMyFriends { result in
+        Requests.instance.getMyFriends { [weak self] result in
             switch result {
             case .success(let users):
-                self.users = users
+                self?.users = users
             case .failure(let error):
                 print(error)
             }
-        }
-        self.tableView.reloadData()
-    }
-    
-    private func requestPhotosForTest() {
-        Requests.instance.getAllPhotosByOwnerId(ownerId: userId) { result in
-            switch result {
-            case .success(let photos):
-                self.photos = photos
-            case .failure(let error):
-                print(error)
-            }
-        }
-         DispatchQueue.main.async {
-            self.tableView.reloadData()
+            self?.tableView.reloadData()
         }
     }
     
     //friends table sections
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return users.count
+        return 1
     }
 
     
@@ -66,7 +47,7 @@ class FriendsListViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Friend", for: indexPath) as! FriendTableViewCell
         let fullname = "\(users[indexPath.row].name) " + "\(users[indexPath.row].surname)"
         cell.myFriendName.text = "\(fullname)"
-       cell.myFriendAvatar.sd_setImage(with: URL(string: users[indexPath.row].avatar), placeholderImage: UIImage(named: "Portrait_Placeholder.png"))
+        cell.myFriendAvatar.sd_setImage(with: URL(string: users[indexPath.row].avatar), placeholderImage: UIImage(named: "Portrait_Placeholder.png"))
         return cell
     }
     
