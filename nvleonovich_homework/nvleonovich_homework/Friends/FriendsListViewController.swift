@@ -16,7 +16,6 @@ class FriendsListViewController: UITableViewController {
         tableFriendsView.dataSource = self
         searchBar.delegate = self
         requestData()
-        print("юзеры \(users)")
     }
     
     private func requestData() {

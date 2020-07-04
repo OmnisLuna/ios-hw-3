@@ -80,9 +80,9 @@ class FriendsPhotoCollectionViewController: UICollectionViewController {
 
 extension FriendsPhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
         func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            
-            let cellWidth = view.bounds.height / 10
-            
+
+            let cellWidth = (view.bounds.width - 15) / 2
+
             return CGSize(width: cellWidth, height: cellWidth)
         }
 }

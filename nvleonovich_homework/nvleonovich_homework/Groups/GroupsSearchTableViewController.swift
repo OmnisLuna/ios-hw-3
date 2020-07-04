@@ -9,7 +9,6 @@ class GroupsSearchTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         requestData()
-        print("группы \(allGroups)")
     }
     
     private func requestData() {
