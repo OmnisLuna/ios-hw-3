@@ -50,7 +50,19 @@ class AuthorizationViewController: UIViewController {
 //    "error": {
 //           "error_code": 5,
 //           "error_msg": "User authorization failed: invalid session.",
-    
+//    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+//        // Проверяем данные
+//        let checkResult = checkUserData()
+//
+//        // Если данные не верны, покажем ошибку
+//        if !checkResult {
+//            showLoginError()
+//        }
+//
+//        // Вернем результат
+//        return checkResult
+//    }
+//
 }
 
 extension AuthorizationViewController: WKNavigationDelegate {

@@ -33,6 +33,11 @@ class GroupsListTableViewController: UITableViewController {
         })
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        requestData()
+        RealmHelper.ask.refresh()
+    }
+    
     private func requestData() {
         Requests.go.getMyGroups { [weak self] result in
             switch result {
@@ -60,26 +65,32 @@ class GroupsListTableViewController: UITableViewController {
         cell.avatar.sd_setImage(with: URL(string: myGroups[indexPath.row].avatar), placeholderImage: UIImage(named: "placeholder-1-300x200.png"))
         return cell
     }
+
+    @IBAction func openGroups(_ sender: Any) {
+        let destination = GroupsSearchTableViewController()
+        destination.requestData()
+        RealmHelper.ask.refresh()
+    }
     
     @IBAction func addGroup(segue: UIStoryboardSegue) {
         
         if segue.identifier == "AddGroup" {
-        
             let allGroupsController = segue.source as! GroupsSearchTableViewController
             if let indexPath = allGroupsController.tableView.indexPathForSelectedRow {
                 let group = allGroupsController.allGroups[indexPath.row].id
                 Requests.go.joinGroup(id: group)
-                requestData()
-                allGroupsController.requestData()
+                RealmHelper.ask.changeIsMember(group, 1)
                 }
         }
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            Requests.go.leaveGroup(id: myGroups[indexPath.row].id)
+            let group = myGroups[indexPath.row].id
+            Requests.go.leaveGroup(id: group)
             myGroups.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            RealmHelper.ask.changeIsMember(group, 0)
         }
     }
 }
