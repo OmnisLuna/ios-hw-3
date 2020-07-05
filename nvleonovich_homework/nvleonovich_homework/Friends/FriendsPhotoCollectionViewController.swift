@@ -14,6 +14,7 @@ class FriendsPhotoCollectionViewController: UICollectionViewController {
         super.viewDidLoad()
         self.collectionView.delegate = self
         requestPhotosForTest()
+        notificationsObserver()
     }
     
     private func requestPhotosForTest() {
