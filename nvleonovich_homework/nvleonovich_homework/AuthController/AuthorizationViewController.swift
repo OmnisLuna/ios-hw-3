@@ -33,18 +33,23 @@ class AuthorizationViewController: UIViewController {
             urlComponents.host = "oauth.vk.com"
             urlComponents.path = "/authorize"
             urlComponents.queryItems = [
-                URLQueryItem(name: "client_id", value: "7517453"),
+                URLQueryItem(name: "client_id", value: "7530310"),
                 URLQueryItem(name: "display", value: "mobile"),
                 URLQueryItem(name: "redirect_uri", value: "https://oauth.vk.com/blank.html"),
                 URLQueryItem(name: "scope", value: "262150"),
                 URLQueryItem(name: "response_type", value: "token"),
-                URLQueryItem(name: "v", value: "5.110")
+                URLQueryItem(name: "v", value: "5.110"),
+//                URLQueryItem(name: "revoke", value: "1"),
             ]
             
             let request = URLRequest(url: urlComponents.url!)
             
             webview.load(request)
     }
+    
+//    "error": {
+//           "error_code": 5,
+//           "error_msg": "User authorization failed: invalid session.",
     
 }
 

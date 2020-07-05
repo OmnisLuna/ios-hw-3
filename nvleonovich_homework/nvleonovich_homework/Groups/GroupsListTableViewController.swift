@@ -1,19 +1,26 @@
 import UIKit
 import SDWebImage
+import RealmSwift
 
 class GroupsListTableViewController: UITableViewController {
+    
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var tableGroupsView: UITableView!
     
     var myGroups = [GroupRealm]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableGroupsView.dataSource = self
+        searchBar.delegate = self
         requestData()
         }
     
     private func requestData() {
         Requests.instance.getMyGroups { [weak self] result in
             switch result {
-            case .success(let groups):
+            case .success(var groups):
+                groups.sort{ $0.name < $1.name }
                 self?.myGroups = groups
             case .failure(let error):
                 print(error)
@@ -44,10 +51,8 @@ class GroupsListTableViewController: UITableViewController {
             let allGroupsController = segue.source as! GroupsSearchTableViewController
         
             if let indexPath = allGroupsController.tableView.indexPathForSelectedRow {
-//                let group = allGroupsController.allGroups[indexPath.row].id
-//                if !groupName.contains(group) {
-//                    groupName.append(group)
-//                GroupsWorker().joinGroup(id: group)
+                let group = allGroupsController.allGroups[indexPath.row].id
+                Requests.instance.joinGroup(id: group)
                 tableView.reloadData()
                 }
         }
@@ -56,7 +61,8 @@ class GroupsListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             myGroups.remove(at: indexPath.row)
-//            GroupsWorker().leaveGroup(id: myGroups[indexPath.row].id)
+            let group = myGroups[indexPath.row].id
+            Requests.instance.leaveGroup(id: group)
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.reloadData()
         }
@@ -64,3 +70,15 @@ class GroupsListTableViewController: UITableViewController {
 
 }
 
+extension GroupsListTableViewController: UISearchBarDelegate {
+        
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        let realm = try! Realm()
+        var sortedGroups = Array(realm.objects(GroupRealm.self).filter("isMember == 1"))
+        sortedGroups.sort{ $0.name < $1.name }
+        myGroups = searchText.isEmpty ? sortedGroups : myGroups.filter { (group: GroupRealm) -> Bool in
+            return group.name.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
+        }
+        tableView.reloadData()
+    }
+}

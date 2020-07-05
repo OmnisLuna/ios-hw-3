@@ -87,9 +87,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" placeholder="введите название группы" id="Y7U-A0-aZS">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </searchBar>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MyGroupCell" id="2UB-c0-xDd" customClass="MyGroupTableViewCell" customModule="nvleonovich_homework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="414" height="84.5"/>
+                                <rect key="frame" x="0.0" y="72" width="414" height="84.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2UB-c0-xDd" id="h97-oq-nmy">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="84.5"/>
@@ -135,6 +140,10 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="searchBar" destination="Y7U-A0-aZS" id="dqq-TE-hoM"/>
+                        <outlet property="tableGroupsView" destination="Rgm-BO-lgn" id="MSh-cH-KUY"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wTu-Kl-G4H" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -148,9 +157,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" placeholder="введите название группы" id="F0a-al-d3W">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </searchBar>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AllGroupCell" id="8WE-xQ-ceW" customClass="GroupTableViewCell" customModule="nvleonovich_homework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="414" height="84.5"/>
+                                <rect key="frame" x="0.0" y="72" width="414" height="84.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="8WE-xQ-ceW" id="ehi-Ay-pyn">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="84.5"/>
@@ -189,6 +203,10 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Добавить" id="9Gu-YA-GDR"/>
+                    <connections>
+                        <outlet property="searchBar" destination="F0a-al-d3W" id="mzl-Jz-se8"/>
+                        <outlet property="tableAllGroupsView" destination="YKD-kr-fjU" id="BHz-9C-YgQ"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bnK-2d-mv4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="AkO-og-wgU" userLabel="Exit" sceneMemberID="exit"/>

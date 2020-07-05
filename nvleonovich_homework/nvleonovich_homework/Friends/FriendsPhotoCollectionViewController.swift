@@ -12,7 +12,6 @@ class FriendsPhotoCollectionViewController: UICollectionViewController {
         super.viewDidLoad()
         self.collectionView.delegate = self
         requestPhotosForTest()
-        print("\(currentUserId) и \(photos)")
     }
     
     private func requestPhotosForTest() {
