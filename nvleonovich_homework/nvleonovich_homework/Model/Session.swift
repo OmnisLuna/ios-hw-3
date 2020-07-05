@@ -7,5 +7,4 @@ class Session {
     
     var userId: Int = 0
     var token: String = ""
-    var tokenExpires: Int = 0
 }

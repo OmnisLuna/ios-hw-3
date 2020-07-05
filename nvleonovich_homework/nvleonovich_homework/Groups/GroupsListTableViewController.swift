@@ -1,24 +1,48 @@
 import UIKit
 import SDWebImage
+import RealmSwift
 
 class GroupsListTableViewController: UITableViewController {
     
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var tableGroupsView: UITableView!
+
     var myGroups = [GroupRealm]()
-    
+    var token: NotificationToken?
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableGroupsView.dataSource = self
+        searchBar.delegate = self
         requestData()
+        notificationsObserver()
         }
     
-    private func requestData() {
-        Requests.instance.getMyGroups { [weak self] result in
+    private func notificationsObserver() {
+        guard let realm = try? Realm() else { return }
+        token = realm.objects(GroupRealm.self).observe({ [weak self] (result) in
             switch result {
-            case .success(let groups):
+            case .initial:
+                print("My groups data initialized")
+            case .update(_, deletions: _, insertions: _, modifications: _):
+                print("My groups data changed")
+                self?.tableView.reloadData()
+            case .error(let error):
+                fatalError(error.localizedDescription)
+            }
+        })
+    }
+    
+    private func requestData() {
+        Requests.go.getMyGroups { [weak self] result in
+            switch result {
+            case .success(var groups):
+                groups = RealmHelper.ask.getObjects(filter: "isMember == 1")
+                groups.sort{ $0.name < $1.name }
                 self?.myGroups = groups
             case .failure(let error):
                 print(error)
             }
-            self?.tableView.reloadData()
         }
     }
     
@@ -42,25 +66,32 @@ class GroupsListTableViewController: UITableViewController {
         if segue.identifier == "AddGroup" {
         
             let allGroupsController = segue.source as! GroupsSearchTableViewController
-        
             if let indexPath = allGroupsController.tableView.indexPathForSelectedRow {
-//                let group = allGroupsController.allGroups[indexPath.row].id
-//                if !groupName.contains(group) {
-//                    groupName.append(group)
-//                GroupsWorker().joinGroup(id: group)
-                tableView.reloadData()
+                let group = allGroupsController.allGroups[indexPath.row].id
+                Requests.go.joinGroup(id: group)
+                requestData()
+                allGroupsController.requestData()
                 }
         }
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            Requests.go.leaveGroup(id: myGroups[indexPath.row].id)
             myGroups.remove(at: indexPath.row)
-//            GroupsWorker().leaveGroup(id: myGroups[indexPath.row].id)
             tableView.deleteRows(at: [indexPath], with: .fade)
-            tableView.reloadData()
         }
     }
-
 }
 
+extension GroupsListTableViewController: UISearchBarDelegate {
+        
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        var sortedGroups: [GroupRealm] = RealmHelper.ask.getObjects(filter: "isMember == 1")
+        sortedGroups.sort{ $0.name < $1.name }
+        myGroups = searchText.isEmpty ? sortedGroups : myGroups.filter { (group: GroupRealm) -> Bool in
+            return group.name.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
+        }
+        tableView.reloadData()
+    }
+}
