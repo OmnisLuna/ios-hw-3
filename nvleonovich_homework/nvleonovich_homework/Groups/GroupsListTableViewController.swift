@@ -6,26 +6,43 @@ class GroupsListTableViewController: UITableViewController {
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableGroupsView: UITableView!
-    
+
     var myGroups = [MyGroupRealm]()
-    
+    var token: NotificationToken?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableGroupsView.dataSource = self
         searchBar.delegate = self
         requestData()
+        notificationsObserver()
         }
+    
+    private func notificationsObserver() {
+        guard let realm = try? Realm() else { return }
+        token = realm.objects(MyGroupRealm.self).observe({ [weak self] (result) in
+            switch result {
+            case .initial:
+                print("My groups data initialized")
+            case .update(_, deletions: _, insertions: _, modifications: _):
+                print("My groups data changed")
+                self?.tableView.reloadData()
+            case .error(let error):
+                fatalError(error.localizedDescription)
+            }
+        })
+    }
     
     private func requestData() {
         Requests.go.getMyGroups { [weak self] result in
             switch result {
             case .success(var groups):
+                groups = RealmHelper.ask.getObjects(filter: "isMember == 1")
                 groups.sort{ $0.name < $1.name }
                 self?.myGroups = groups
             case .failure(let error):
                 print(error)
             }
-            self?.tableView.reloadData()
         }
     }
     
@@ -52,21 +69,17 @@ class GroupsListTableViewController: UITableViewController {
             if let indexPath = allGroupsController.tableView.indexPathForSelectedRow {
                 let group = allGroupsController.allGroups[indexPath.row].id
                 Requests.go.joinGroup(id: group)
-                tableView.reloadData()
+                requestData()
+                allGroupsController.requestData()
                 }
         }
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-//            let realm = try! Realm()
-            let group = myGroups[indexPath.row].id
-//            let groupForDelete = Array(realm.objects(GroupRealm.self).filter("id = %@", group))
-//            RealmHelper.ask.deleteObjects(groupForDelete)
+            Requests.go.leaveGroup(id: myGroups[indexPath.row].id)
             myGroups.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
-            Requests.go.leaveGroup(id: group)
-            tableView.reloadData()
         }
     }
 }
@@ -74,8 +87,7 @@ class GroupsListTableViewController: UITableViewController {
 extension GroupsListTableViewController: UISearchBarDelegate {
         
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let realm = try! Realm()
-        var sortedGroups = Array(realm.objects(MyGroupRealm.self))
+        var sortedGroups: [MyGroupRealm] = RealmHelper.ask.getObjects(filter: "isMember == 1")
         sortedGroups.sort{ $0.name < $1.name }
         myGroups = searchText.isEmpty ? sortedGroups : myGroups.filter { (group: MyGroupRealm) -> Bool in
             return group.name.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil

@@ -9,6 +9,7 @@ class FriendsListViewController: UITableViewController {
 
     private var users = [UserRealm]()
     private var sectionTitles = [String]()
+    var token: NotificationToken?
     
     
     override func viewDidLoad() {
@@ -28,6 +29,21 @@ class FriendsListViewController: UITableViewController {
             }
             self?.tableView.reloadData()
         }
+    }
+    
+    private func notificationsObserver() {
+        guard let realm = try? Realm() else { return }
+        token = realm.objects(UserRealm.self).observe({ [weak self] (result) in
+            switch result {
+            case .initial:
+                print("My friends data initialized")
+            case .update(_, deletions: _, insertions: _, modifications: _):
+                print("My friends data changed")
+                self?.tableView.reloadData()
+            case .error(let error):
+                fatalError(error.localizedDescription)
+            }
+        })
     }
     
     //friends table sections
@@ -66,8 +82,7 @@ class FriendsListViewController: UITableViewController {
 extension FriendsListViewController: UISearchBarDelegate {
         
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let realm = try! Realm()
-        let sortedUsers = Array(realm.objects(UserRealm.self))
+        let sortedUsers: [UserRealm] = RealmHelper.ask.getObjects()
         
         users = searchText.isEmpty ? sortedUsers : users.filter { (user: UserRealm) -> Bool in
             let fullName = "\(user.name) " + "\(user.surname)"

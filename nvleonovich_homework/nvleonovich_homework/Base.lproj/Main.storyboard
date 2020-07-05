@@ -193,7 +193,7 @@
                                 <connections>
                                     <outlet property="myGroupAvatar" destination="B0R-kC-byd" id="5nC-b7-im7"/>
                                     <outlet property="myGroupName" destination="G5d-8G-hxF" id="sgk-fi-dRw"/>
-                                    <segue destination="AkO-og-wgU" kind="unwind" identifier="AddGroup" unwindAction="addGroupWithSegue:" id="prv-Kr-b8D"/>
+                                    <segue destination="AkO-og-wgU" kind="unwind" identifier="AddGroup" unwindAction="addGroupWithSegue:" id="pk0-5N-YwZ"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

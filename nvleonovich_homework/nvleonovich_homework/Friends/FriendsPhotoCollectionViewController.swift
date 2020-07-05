@@ -1,5 +1,6 @@
 import UIKit
 import SDWebImage
+import RealmSwift
 
 
 class FriendsPhotoCollectionViewController: UICollectionViewController {
@@ -7,6 +8,7 @@ class FriendsPhotoCollectionViewController: UICollectionViewController {
     var currentUserId: Int = 0
     let animation = Animations()
     var photos = [PhotoRealm]()
+    var token: NotificationToken?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,11 +24,23 @@ class FriendsPhotoCollectionViewController: UICollectionViewController {
             case .failure(let error):
                 print(error)
             }
-            self?.collectionView.reloadData()
         }
     }
-        
-        // MARK: UICollectionViewDataSource
+    
+    private func notificationsObserver() {
+        guard let realm = try? Realm() else { return }
+        token = realm.objects(PhotoRealm.self).observe({ [weak self] (result) in
+            switch result {
+            case .initial:
+                print("Friend's photos data initialized")
+            case .update(_, deletions: _, insertions: _, modifications: _):
+                print("Friend's photos data changed")
+                self?.collectionView.reloadData()
+            case .error(let error):
+                fatalError(error.localizedDescription)
+            }
+        })
+    }
         
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1

@@ -9,22 +9,42 @@ class GroupsSearchTableViewController: UITableViewController {
     
     var allGroups = [GroupRealm]()
     let realm = try! Realm()
+    var token: NotificationToken?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableAllGroupsView.dataSource = self
         searchBar.delegate = self
         requestData()
+        notificationsObserver()
     }
     
-    private func requestData() {
+    func requestData() {
         Requests.go.getGroupsCatalog { [weak self] result in
-            //фильтруем группы, чтобы отображались только те, в которых текущий пользователь не участник
-            let realm = try! Realm()
-            self?.allGroups = Array(realm.objects(GroupRealm.self))
-            self?.allGroups.sort{ $0.name < $1.name }
-            self?.tableView.reloadData()
+            switch result {
+            case .success(var groups):
+               groups = RealmHelper.ask.getObjects(filter: "isMember == 0")
+                groups.sort{ $0.name < $1.name }
+                self?.allGroups = groups
+            case .failure(let error):
+                print(error)
+            }
         }
+    }
+    
+    private func notificationsObserver() {
+        guard let realm = try? Realm() else { return }
+        token = realm.objects(GroupRealm.self).observe({ [weak self] (result) in
+            switch result {
+            case .initial:
+                print("All groups data initialized")
+            case .update(_, deletions: _, insertions: _, modifications: _):
+                print("All groups data changed")
+                self?.tableView.reloadData()
+            case .error(let error):
+                fatalError(error.localizedDescription)
+            }
+        })
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -46,8 +66,7 @@ class GroupsSearchTableViewController: UITableViewController {
 extension GroupsSearchTableViewController: UISearchBarDelegate {
         
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let realm = try! Realm()
-        var sortedGroups = Array(realm.objects(GroupRealm.self))
+        var sortedGroups: [GroupRealm] = RealmHelper.ask.getObjects(filter: "isMember == 0")
         sortedGroups.sort{ $0.name < $1.name }
         allGroups = searchText.isEmpty ? sortedGroups : allGroups.filter { (group: GroupRealm) -> Bool in
             return group.name.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil

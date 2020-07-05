@@ -1,5 +1,5 @@
-import Foundation
 import RealmSwift
+import UIKit
 
 class RealmHelper {
     static let ask = RealmHelper()
@@ -9,9 +9,9 @@ class RealmHelper {
     func saveObjects<T: Object>(_ objects: [T]) {
         do {
             let realm = try Realm()
-            realm.beginWrite()
+            try! realm.write {
             realm.add(objects, update: .all)
-            try realm.commitWrite()
+            }
         } catch {
             print(error)
         }
