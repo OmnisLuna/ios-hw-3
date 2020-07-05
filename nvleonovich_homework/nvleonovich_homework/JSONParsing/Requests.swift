@@ -7,7 +7,7 @@ enum JsonError: Error {
 }
 
 class Requests {
-    static let instance = Requests()
+    static let go = Requests()
     
     private let baseUrl = "https://api.vk.com/method/"
     private var customUrl = ""
@@ -41,7 +41,7 @@ class Requests {
                 let decoder = JSONDecoder()
                 do {
                     let requestResponse = try decoder.decode(UserRealmResponse.self, from: data)
-                    RealmHelper.instance.saveObjects(requestResponse.response.items)
+                    RealmHelper.ask.saveObjects(requestResponse.response.items)
                     handler(.success(requestResponse.response.items))
                 } catch {
                     handler(.failure(error))
@@ -71,7 +71,7 @@ class Requests {
             let decoder = JSONDecoder()
             do {
                 let requestResponse = try decoder.decode(UserRealmResponse.self, from: data)
-                RealmHelper.instance.saveObjects(requestResponse.response.items)
+                RealmHelper.ask.saveObjects(requestResponse.response.items)
                 handler(.success(requestResponse.response.items))
             } catch {
                 handler(.failure(error))
@@ -113,7 +113,7 @@ class Requests {
                 photo.likesCount = item["likes"]["count"].intValue
                 photos.append(photo)
         }
-                    RealmHelper.instance.saveObjects(photos)
+                    RealmHelper.ask.saveObjects(photos)
                     handler(.success(photos))
     })
     }
@@ -129,7 +129,6 @@ class Requests {
             "v": apiVersion,
             "owner_id": "\(Session.instance.userId)",
             "extended": "1",
-            "count": "20",
         ]
         
         AF.request(fullUrl,
@@ -144,7 +143,7 @@ class Requests {
                 let decoder = JSONDecoder()
                 do {
                     let requestResponse = try decoder.decode(GroupRealmResponse.self, from: data)
-                    RealmHelper.instance.saveObjects(requestResponse.response.items)
+                    RealmHelper.ask.saveObjects(requestResponse.response.items)
                     handler(.success(requestResponse.response.items))
                 } catch {
                     handler(.failure(error))
@@ -174,7 +173,7 @@ class Requests {
                 let decoder = JSONDecoder()
                 do {
                     let requestResponse = try decoder.decode(GroupRealmResponse.self, from: data)
-                    RealmHelper.instance.saveObjects(requestResponse.response.items)
+                    RealmHelper.ask.saveObjects(requestResponse.response.items)
                     handler(.success(requestResponse.response.items))
                 } catch {
                     handler(.failure(error))
@@ -204,7 +203,7 @@ class Requests {
                 let decoder = JSONDecoder()
                 do {
                     let requestResponse = try decoder.decode(GroupRealmResponse.self, from: data)
-                    RealmHelper.instance.saveObjects(requestResponse.response.items)
+                    RealmHelper.ask.saveObjects(requestResponse.response.items)
                     handler(.success(requestResponse.response.items))
                 } catch {
                     handler(.failure(error))
@@ -222,8 +221,9 @@ class Requests {
         ]
         
         AF.request(fullUrl, method: .get, parameters: parameters, headers: nil).responseJSON { (response) in
-
+            
         }
+        print("succsessfull joined group \(id)")
     }
     
     func leaveGroup(id: Int) {
@@ -236,8 +236,9 @@ class Requests {
            ]
                
         AF.request(fullUrl, method: .get, parameters: parameters, headers: nil).responseJSON { (response) in
-
+           
         }
+         print("succsessfull left group \(id)")
     }
     
     // MARK: - лайки

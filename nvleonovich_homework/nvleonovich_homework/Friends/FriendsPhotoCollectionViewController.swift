@@ -15,7 +15,7 @@ class FriendsPhotoCollectionViewController: UICollectionViewController {
     }
     
     private func requestPhotosForTest() {
-        Requests.instance.getAllPhotosByOwnerId(ownerId: currentUserId) { [weak self] result in
+        Requests.go.getAllPhotosByOwnerId(ownerId: currentUserId) { [weak self] result in
             switch result {
             case .success(let photos):
             self?.photos = photos

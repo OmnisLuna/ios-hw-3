@@ -2,7 +2,7 @@ import Foundation
 import RealmSwift
 
 class RealmHelper {
-    static let instance = RealmHelper()
+    static let ask = RealmHelper()
 
     private init() {}
 
@@ -12,6 +12,17 @@ class RealmHelper {
             realm.beginWrite()
             realm.add(objects, update: .all)
             try realm.commitWrite()
+        } catch {
+            print(error)
+        }
+    }
+    
+    func deleteObjects<T: Object>(_ objects: [T]) {
+        do {
+            let realm = try Realm()
+            try! realm.write {
+                realm.delete(objects);
+            }
         } catch {
             print(error)
         }

@@ -18,7 +18,7 @@ class GroupsSearchTableViewController: UITableViewController {
     }
     
     private func requestData() {
-        Requests.instance.getGroupsCatalog { [weak self] result in
+        Requests.go.getGroupsCatalog { [weak self] result in
             //фильтруем группы, чтобы отображались только те, в которых текущий пользователь не участник
             let realm = try! Realm()
             self?.allGroups = Array(realm.objects(GroupRealm.self).filter("isMember == 0"))

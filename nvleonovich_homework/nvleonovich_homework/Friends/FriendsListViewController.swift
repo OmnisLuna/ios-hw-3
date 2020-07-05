@@ -19,7 +19,7 @@ class FriendsListViewController: UITableViewController {
     }
     
     private func requestData() {
-        Requests.instance.getMyFriends { [weak self] result in
+        Requests.go.getMyFriends { [weak self] result in
             switch result {
             case .success(let users):
                 self?.users = users

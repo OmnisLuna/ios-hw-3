@@ -17,7 +17,7 @@ class GroupsListTableViewController: UITableViewController {
         }
     
     private func requestData() {
-        Requests.instance.getMyGroups { [weak self] result in
+        Requests.go.getMyGroups { [weak self] result in
             switch result {
             case .success(var groups):
                 groups.sort{ $0.name < $1.name }
@@ -49,25 +49,30 @@ class GroupsListTableViewController: UITableViewController {
         if segue.identifier == "AddGroup" {
         
             let allGroupsController = segue.source as! GroupsSearchTableViewController
-        
+//            guard let target = segue.destination as? GroupsListTableViewController else { return }
             if let indexPath = allGroupsController.tableView.indexPathForSelectedRow {
                 let group = allGroupsController.allGroups[indexPath.row].id
-                Requests.instance.joinGroup(id: group)
+                Requests.go.joinGroup(id: group)
+                requestData()
                 tableView.reloadData()
+                
                 }
         }
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            myGroups.remove(at: indexPath.row)
+//            let realm = try! Realm()
             let group = myGroups[indexPath.row].id
-            Requests.instance.leaveGroup(id: group)
+//            let groupForDelete = Array(realm.objects(GroupRealm.self).filter("id = %@", group))
+//            RealmHelper.ask.deleteObjects(groupForDelete)
+            myGroups.remove(at: indexPath.row)
+//            myGroups = Array(realm.objects(GroupRealm.self).filter("isMember = 1"))
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.reloadData()
+            Requests.go.leaveGroup(id: group)
         }
     }
-
 }
 
 extension GroupsListTableViewController: UISearchBarDelegate {
