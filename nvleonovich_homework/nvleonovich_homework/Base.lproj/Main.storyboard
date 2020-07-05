@@ -135,6 +135,7 @@
                     <navigationItem key="navigationItem" title="Мои сообщества" id="wXs-aj-fBA">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="XvS-yh-4e1">
                             <connections>
+                                <action selector="openGroups:" destination="BW7-F8-n7g" id="HyK-G9-FEE"/>
                                 <segue destination="VSN-kQ-PLh" kind="show" id="6ro-hU-vNC"/>
                             </connections>
                         </barButtonItem>
