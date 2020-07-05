@@ -7,7 +7,7 @@ class GroupsListTableViewController: UITableViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableGroupsView: UITableView!
 
-    var myGroups = [MyGroupRealm]()
+    var myGroups = [GroupRealm]()
     var token: NotificationToken?
 
     override func viewDidLoad() {
@@ -20,7 +20,7 @@ class GroupsListTableViewController: UITableViewController {
     
     private func notificationsObserver() {
         guard let realm = try? Realm() else { return }
-        token = realm.objects(MyGroupRealm.self).observe({ [weak self] (result) in
+        token = realm.objects(GroupRealm.self).observe({ [weak self] (result) in
             switch result {
             case .initial:
                 print("My groups data initialized")
@@ -87,9 +87,9 @@ class GroupsListTableViewController: UITableViewController {
 extension GroupsListTableViewController: UISearchBarDelegate {
         
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        var sortedGroups: [MyGroupRealm] = RealmHelper.ask.getObjects(filter: "isMember == 1")
+        var sortedGroups: [GroupRealm] = RealmHelper.ask.getObjects(filter: "isMember == 1")
         sortedGroups.sort{ $0.name < $1.name }
-        myGroups = searchText.isEmpty ? sortedGroups : myGroups.filter { (group: MyGroupRealm) -> Bool in
+        myGroups = searchText.isEmpty ? sortedGroups : myGroups.filter { (group: GroupRealm) -> Bool in
             return group.name.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
         }
         tableView.reloadData()

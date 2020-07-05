@@ -33,7 +33,6 @@
 		04A9142C2430E434005ABD6A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04A9142A2430E434005ABD6A /* Main.storyboard */; };
 		04A9142E2430E435005ABD6A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04A9142D2430E435005ABD6A /* Assets.xcassets */; };
 		04A914312430E435005ABD6A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04A9142F2430E435005ABD6A /* LaunchScreen.storyboard */; };
-		04AE985524B217F20033F319 /* MyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AE985424B217F20033F319 /* MyGroup.swift */; };
 		04B58553244483BA00B00AB1 /* AvatarShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B58552244483BA00B00AB1 /* AvatarShadow.swift */; };
 		04B9334D249ECBF600E97280 /* AuthorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B9334C249ECBF600E97280 /* AuthorizationViewController.swift */; };
 		04CDE87D244C8B8A00A43C3A /* SwipePhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CDE87C244C8B8A00A43C3A /* SwipePhotoController.swift */; };
@@ -72,7 +71,6 @@
 		04A9142D2430E435005ABD6A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		04A914302430E435005ABD6A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		04A914322430E435005ABD6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		04AE985424B217F20033F319 /* MyGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGroup.swift; sourceTree = "<group>"; };
 		04B58552244483BA00B00AB1 /* AvatarShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarShadow.swift; sourceTree = "<group>"; };
 		04B9334C249ECBF600E97280 /* AuthorizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationViewController.swift; sourceTree = "<group>"; };
 		04CDE87C244C8B8A00A43C3A /* SwipePhotoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipePhotoController.swift; sourceTree = "<group>"; };
@@ -133,7 +131,6 @@
 				0423655024A0ED1E00CA72A2 /* FeedRecord.swift */,
 				049031042495829F004F3F43 /* Session.swift */,
 				048F08D9244510B600375D45 /* NewsData.swift */,
-				04AE985424B217F20033F319 /* MyGroup.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -360,7 +357,6 @@
 				04000C412433FFEE00E93B56 /* GroupTableViewCell.swift in Sources */,
 				04A914252430E434005ABD6A /* AppDelegate.swift in Sources */,
 				047FA50B244CA05A0058C140 /* FriendPhotoView.swift in Sources */,
-				04AE985524B217F20033F319 /* MyGroup.swift in Sources */,
 				042053042455E57F008DD9AF /* FullSIzePhotoView.swift in Sources */,
 				0423655124A0ED1E00CA72A2 /* FeedRecord.swift in Sources */,
 				044F2D1A24490A0B00FDE5B2 /* ActivityCounterControl.swift in Sources */,

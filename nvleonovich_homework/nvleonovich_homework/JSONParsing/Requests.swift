@@ -120,7 +120,7 @@ class Requests {
     
         // MARK: - группы
 
-    func getMyGroups(handler: @escaping (Result<[MyGroupRealm], Error>) -> Void) {
+    func getMyGroups(handler: @escaping (Result<[GroupRealm], Error>) -> Void) {
         customUrl = "groups.get"
         let fullUrl = baseUrl + customUrl
         
@@ -142,7 +142,7 @@ class Requests {
                 }
                 let decoder = JSONDecoder()
                 do {
-                    let requestResponse = try decoder.decode(MyGroupRealmResponse.self, from: data)
+                    let requestResponse = try decoder.decode(GroupRealmResponse.self, from: data)
                     RealmHelper.ask.saveObjects(requestResponse.response.items)
                     handler(.success(requestResponse.response.items))
                 } catch {
