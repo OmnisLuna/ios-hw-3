@@ -21,7 +21,7 @@ class GroupsSearchTableViewController: UITableViewController {
         Requests.go.getGroupsCatalog { [weak self] result in
             //фильтруем группы, чтобы отображались только те, в которых текущий пользователь не участник
             let realm = try! Realm()
-            self?.allGroups = Array(realm.objects(GroupRealm.self).filter("isMember == 0"))
+            self?.allGroups = Array(realm.objects(GroupRealm.self))
             self?.allGroups.sort{ $0.name < $1.name }
             self?.tableView.reloadData()
         }
@@ -47,7 +47,7 @@ extension GroupsSearchTableViewController: UISearchBarDelegate {
         
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         let realm = try! Realm()
-        var sortedGroups = Array(realm.objects(GroupRealm.self).filter("isMember == 0"))
+        var sortedGroups = Array(realm.objects(GroupRealm.self))
         sortedGroups.sort{ $0.name < $1.name }
         allGroups = searchText.isEmpty ? sortedGroups : allGroups.filter { (group: GroupRealm) -> Bool in
             return group.name.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil

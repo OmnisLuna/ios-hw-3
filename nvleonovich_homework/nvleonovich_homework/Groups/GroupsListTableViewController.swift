@@ -7,7 +7,7 @@ class GroupsListTableViewController: UITableViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableGroupsView: UITableView!
     
-    var myGroups = [GroupRealm]()
+    var myGroups = [MyGroupRealm]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,13 +49,10 @@ class GroupsListTableViewController: UITableViewController {
         if segue.identifier == "AddGroup" {
         
             let allGroupsController = segue.source as! GroupsSearchTableViewController
-//            guard let target = segue.destination as? GroupsListTableViewController else { return }
             if let indexPath = allGroupsController.tableView.indexPathForSelectedRow {
                 let group = allGroupsController.allGroups[indexPath.row].id
                 Requests.go.joinGroup(id: group)
-                requestData()
                 tableView.reloadData()
-                
                 }
         }
     }
@@ -67,10 +64,9 @@ class GroupsListTableViewController: UITableViewController {
 //            let groupForDelete = Array(realm.objects(GroupRealm.self).filter("id = %@", group))
 //            RealmHelper.ask.deleteObjects(groupForDelete)
             myGroups.remove(at: indexPath.row)
-//            myGroups = Array(realm.objects(GroupRealm.self).filter("isMember = 1"))
             tableView.deleteRows(at: [indexPath], with: .fade)
-            tableView.reloadData()
             Requests.go.leaveGroup(id: group)
+            tableView.reloadData()
         }
     }
 }
@@ -79,9 +75,9 @@ extension GroupsListTableViewController: UISearchBarDelegate {
         
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         let realm = try! Realm()
-        var sortedGroups = Array(realm.objects(GroupRealm.self).filter("isMember == 1"))
+        var sortedGroups = Array(realm.objects(MyGroupRealm.self))
         sortedGroups.sort{ $0.name < $1.name }
-        myGroups = searchText.isEmpty ? sortedGroups : myGroups.filter { (group: GroupRealm) -> Bool in
+        myGroups = searchText.isEmpty ? sortedGroups : myGroups.filter { (group: MyGroupRealm) -> Bool in
             return group.name.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
         }
         tableView.reloadData()
