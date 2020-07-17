@@ -94,20 +94,9 @@ extension AuthorizationViewController: WKNavigationDelegate {
         print("token \(Session.instance.token)")
         
         decisionHandler(.cancel)
-        performSegue(withIdentifier: "GoToFriendsList", sender: nil)
-        
-        
-//        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-//
-//        let vc : ProfileTabBarController = storyboard.instantiateViewController(withIdentifier: "profileTabBar") as! ProfileTabBarController
-//
-//        let navigationController = UINavigationController(rootViewController: vc)
-//
-//        navigationController.modalPresentationStyle = .fullScreen
-//
-//        present(navigationController, animated: true, completion: nil)
+//        performSegue(withIdentifier: "GoToFriendsList", sender: nil)
+        performSegue(withIdentifier: "GoToFireBaseAuth", sender: nil)
         
         }
-    
 }
 

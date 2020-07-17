@@ -1,12 +1,16 @@
 import UIKit
 import SDWebImage
 import RealmSwift
+import FirebaseFirestore
 
 class GroupsListTableViewController: UITableViewController {
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableGroupsView: UITableView!
-
+    
+    let db = Firestore.firestore()
+    var ref: DocumentReference? = nil
+    
     var myGroups = [GroupRealm]()
     var token: NotificationToken?
 
@@ -80,7 +84,18 @@ class GroupsListTableViewController: UITableViewController {
                 let group = allGroupsController.allGroups[indexPath.row].id
                 Requests.go.joinGroup(id: group)
                 RealmHelper.ask.changeIsMember(group, 1)
-                }
+                
+                //добавление группы в базу firestore
+                ref = db.collection("groups").addDocument(data: [
+                    "id": allGroupsController.allGroups[indexPath.row].id,
+                    "name": allGroupsController.allGroups[indexPath.row].name,
+                    "avatar": allGroupsController.allGroups[indexPath.row].avatar,
+                    "isMember": allGroupsController.allGroups[indexPath.row].isMember,
+                ])
+//                ref = db.collection("users").addDocument(data: [
+//                    "groups": allGroupsController.allGroups[indexPath.row]
+//                ])
+            }
         }
     }
     
