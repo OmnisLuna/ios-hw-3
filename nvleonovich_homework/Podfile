@@ -8,6 +8,8 @@ pod 'SwiftyJSON'
 pod 'Alamofire'
 pod 'SDWebImage'
 pod 'RealmSwift'
+pod 'Firebase/Auth'	
+pod 'Firebase/Firestore'
   # Pods for nvleonovich_homework
 
 end
